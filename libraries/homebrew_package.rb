@@ -30,7 +30,7 @@ class Chef
             brew('unlink', name) unless installed_versions.empty?
 
             action = installed_versions.include?(version) ? 'link' : 'install'
-            brew(action, name)
+            action == 'install' ? brew(action, @new_resource.options, name) : brew(action, name)
           end
         end
 
@@ -39,11 +39,12 @@ class Chef
         end
 
         def remove_package(name, version)
-          brew('uninstall', name)
+          brew('uninstall', @new_resource.options, name)
         end
 
         # Homebrew doesn't really have a notion of purging, so just remove.
         def purge_package(name, version)
+          @new_resource.options = ((@new_resource.options || "") << " --force").strip
           remove_package(name, version)
         end
 
