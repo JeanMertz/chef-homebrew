@@ -11,17 +11,15 @@ def load_current_resource
 end
 
 action :tap do
-  unless @tap.tapped
-    execute "tapping #{new_resource.name}" do
-      command "/usr/local/bin/brew tap #{new_resource.name}"
-    end
+  execute "tapping #{new_resource.name}" do
+    command "/usr/local/bin/brew tap #{new_resource.name}"
+    not_if { @tap.tapped }
   end
 end
 
 action :untap do
-  if @tap.tapped
-    execute "untapping #{new_resource.name}" do
-      command "/usr/local/bin/brew untap #{new_resource.name}"
-    end
+  execute "untapping #{new_resource.name}" do
+    command "/usr/local/bin/brew untap #{new_resource.name}"
+    only_if { @tap.tapped }
   end
 end
