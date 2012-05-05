@@ -23,7 +23,7 @@ class Chef
             # the latest version of git is installed then used to look
             # up older versions of git due to this limitation of
             # homebrew.
-            install_package(name, :latest) if name == 'git' and @current_resource.version.nil?
+            install_package(name, :latest) if name == 'git' && version.nil?
 
             checkout_formula_for(name, version)
 
